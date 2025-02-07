@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ItemModel {
+public class LocationModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,9 +19,7 @@ public class ItemModel {
 
     private String description;
 
-    @Column(nullable = false)
-    private int quantity;
-
     @ManyToOne
-    private LocationModel location;
+    private LocationModel parentLocation;
+
 }
