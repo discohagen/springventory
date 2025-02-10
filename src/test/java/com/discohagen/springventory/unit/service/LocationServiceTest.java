@@ -1,7 +1,8 @@
-package com.discohagen.springventory.service;
+package com.discohagen.springventory.unit.service;
 
 import com.discohagen.springventory.model.LocationModel;
 import com.discohagen.springventory.repository.LocationRepository;
+import com.discohagen.springventory.service.LocationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -1,7 +1,8 @@
-package com.discohagen.springventory.service;
+package com.discohagen.springventory.unit.service;
 
 import com.discohagen.springventory.model.ItemModel;
 import com.discohagen.springventory.repository.ItemRepository;
+import com.discohagen.springventory.service.ItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
