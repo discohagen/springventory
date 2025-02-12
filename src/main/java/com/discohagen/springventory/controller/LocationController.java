@@ -1,5 +1,6 @@
 package com.discohagen.springventory.controller;
 
+import com.discohagen.springventory.model.ItemModel;
 import com.discohagen.springventory.model.LocationModel;
 import com.discohagen.springventory.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,12 @@ public class LocationController {
         return location
                 .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/{id}/items")
+    public ResponseEntity<List<ItemModel>> getItemsInLocation(@PathVariable Long id) {
+        List<ItemModel> items = locationService.getItemsInLocation(id);
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

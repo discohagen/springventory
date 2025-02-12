@@ -1,5 +1,6 @@
 package com.discohagen.springventory.service;
 
+import com.discohagen.springventory.model.ItemModel;
 import com.discohagen.springventory.model.LocationModel;
 import com.discohagen.springventory.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,9 @@ public class LocationService {
 
     public void deleteLocation(Long id) {
         locationRepository.deleteById(id);
+    }
+
+    public List<ItemModel> getItemsInLocation(Long locationId) {
+        return locationRepository.findItemsByLocationId(locationId);
     }
 }
