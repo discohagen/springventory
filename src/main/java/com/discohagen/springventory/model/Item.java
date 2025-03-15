@@ -3,13 +3,16 @@ package com.discohagen.springventory.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Represents an Item from the view of the database. An Item can be anything but should be a physical object not being a location but storeable in a location.
+ */
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class LocationModel {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +22,10 @@ public class LocationModel {
 
     private String description;
 
-    @ManyToOne
-    private LocationModel parentLocation;
+    @Column(nullable = false)
+    private Integer quantity;
 
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 }
