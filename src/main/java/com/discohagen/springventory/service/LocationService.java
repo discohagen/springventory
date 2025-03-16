@@ -67,6 +67,19 @@ public class LocationService {
     }
 
     /**
+     * Retrieves all locations inside a location.
+     *
+     * @param parentLocationId the parent location to retrieve all child locations from.
+     * @return a list of all locations inside the parent location.
+     * @throws IllegalArgumentException if paren location does not exist.
+     */
+    public List<Location> getLocationsByParentLocationId(Long parentLocationId) {
+        Location parentLocation = locationRepository.findById(parentLocationId)
+                .orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + parentLocationId));
+        return locationRepository.findByParentLocationId(parentLocation.getId());
+    }
+
+    /**
      * Deletes a location.
      *
      * @param id the id of the location to delete.

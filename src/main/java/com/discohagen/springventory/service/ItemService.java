@@ -110,4 +110,17 @@ public class ItemService {
                     return itemRepository.save(item);
                 }).orElseThrow(() -> new IllegalArgumentException("Item not found with id: " + id));
     }
+
+    /**
+     * Retrieves all items in a location.
+     *
+     * @param locationId the id of the location to retrieve all items from.
+     * @return a list of all items in the location if the location exists.
+     * @throws IllegalArgumentException if location does not exist.
+     */
+    public List<Item> getItemsByLocationId(Long locationId) {
+        Location location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + locationId));
+        return itemRepository.findByLocationId(location.getId());
+    }
 }
