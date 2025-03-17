@@ -1,105 +1,54 @@
 package com.discohagen.springventory.controller;
 
-import com.discohagen.springventory.dto.ItemRequest;
-import com.discohagen.springventory.dto.UpdateItemRequest;
-import com.discohagen.springventory.model.Item;
-import com.discohagen.springventory.service.ItemService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.discohagen.springventory.dto.item.GetItemDTO;
+import com.discohagen.springventory.dto.item.PatchItemDTO;
+import com.discohagen.springventory.dto.item.PostItemDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 /**
- * Controller to expose endpoint regarding the resource items.
+ * Controller interface for managing items.
+ * Defines the endpoints for operations on items.
  */
-@RestController
-@RequestMapping("/api/items")
-public class ItemController {
-
-    private final ItemService itemService;
+public interface ItemController {
+    /**
+     * Creates an item.
+     *
+     * @param postItemDTO the request body to create the item from.
+     * @return a response with status code.
+     */
+    ResponseEntity<Void> createItem(PostItemDTO postItemDTO);
 
     /**
-     * Constructs an ItemController.
+     * Gets an item.
      *
-     * @param itemService the service used for item operations.
+     * @param id the id of the item to get.
+     * @return a response with status code and the item.
      */
-    @Autowired
-    public ItemController(ItemService itemService) {
-        this.itemService = itemService;
-    }
+    ResponseEntity<GetItemDTO> getItemById(Long id);
 
     /**
-     * Creates a new item.
+     * Gets all items.
      *
-     * @param itemRequest the request containing item details.
-     * @return the uri to the created item and 201 (Created).
+     * @return a response with status code and a list of all items.
      */
-    @PostMapping
-    public ResponseEntity<Void> createItem(@RequestBody ItemRequest itemRequest) {
-        Item savedItem = itemService.saveItem(itemRequest);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedItem.getId())
-                .toUri();
-        return ResponseEntity.created(uri).build();
-    }
+    ResponseEntity<List<GetItemDTO>> getAllItems();
 
     /**
-     * Retrieves all item.
+     * Updates an item.
      *
-     * @return a list of all items and 200 (OK).
+     * @param id           the id of the item to update.
+     * @param patchItemDTO the request body to update the item by.
+     * @return a response with status code and the updated item.
      */
-    @GetMapping
-    public ResponseEntity<List<Item>> getAllItems() {
-        List<Item> items = itemService.getAllItems();
-        return new ResponseEntity<>(items, HttpStatus.OK);
-    }
-
-    /**
-     * Retrieves an item.
-     *
-     * @param id the id of the item to retrieve.
-     * @return the item if found and 200 (OK), otherwise 404 (Not Found).
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable Long id) {
-        Optional<Item> item = itemService.getItemById(id);
-        return item
-                .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    /**
-     * Updates an existing item.
-     *
-     * @param id                the id of the item to update.
-     * @param updateItemRequest the request containing updated item details.
-     * @return the updated item and 200 (OK) if exists, otherwise 404 (Not Found).
-     */
-    @PatchMapping("/{id}")
-    public ResponseEntity<Item> updateItem(@PathVariable Long id, @RequestBody UpdateItemRequest updateItemRequest) {
-        try {
-            Item savedItem = itemService.updateItem(id, updateItemRequest);
-            return new ResponseEntity<>(savedItem, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+    ResponseEntity<GetItemDTO> updateItem(Long id, PatchItemDTO patchItemDTO);
 
     /**
      * Deletes an item.
      *
      * @param id the id of the item to delete.
-     * @return 204 (No Content).
+     * @return a response with status code.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
-        itemService.deleteItem(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    ResponseEntity<Void> deleteItem(Long id);
 }

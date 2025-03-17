@@ -1,126 +1,67 @@
 package com.discohagen.springventory.service;
 
-import com.discohagen.springventory.dto.ItemRequest;
-import com.discohagen.springventory.dto.UpdateItemRequest;
-import com.discohagen.springventory.model.Item;
-import com.discohagen.springventory.model.Location;
-import com.discohagen.springventory.repository.ItemRepository;
-import com.discohagen.springventory.repository.LocationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.discohagen.springventory.dto.item.GetItemDTO;
+import com.discohagen.springventory.dto.item.PatchItemDTO;
+import com.discohagen.springventory.dto.item.PostItemDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service class for managing items.
- * Provides methods to retrieve and manipulate items.
+ * Interface between {@link com.discohagen.springventory.repository.ItemRepository} and {@link com.discohagen.springventory.controller.ItemController}.
+ * Reads and manipulates data in the repository. Implements business logic inclusive simple CRUD-operations.
  */
-@Service
-public class ItemService {
-    private final ItemRepository itemRepository;
-    private final LocationRepository locationRepository;
+public interface ItemService {
 
     /**
-     * Constructs an ItemService.
+     * Creates an item in the repository.
      *
-     * @param itemRepository     the repository used for item operations.
-     * @param locationRepository the repository used for operations regarding locations.
+     * @param postItemDTO data to create the item from.
+     * @return the id the item can be found by.
      */
-    @Autowired
-    public ItemService(ItemRepository itemRepository, LocationRepository locationRepository) {
-        this.itemRepository = itemRepository;
-        this.locationRepository = locationRepository;
-    }
+    Long saveItem(PostItemDTO postItemDTO);
+
+    // TODO: pagination and entry limit for read methods
+    // TODO: sorting for read methods
 
     /**
-     * Saves a new item to the repo.
+     * Gets an item.
      *
-     * @param itemRequest the request body to save as an item.
-     * @return the saved item.
+     * @param id the id of the item to get.
+     * @return the item in format {@link GetItemDTO} if exists, otherwise empty.
      */
-    public Item saveItem(ItemRequest itemRequest) {
-        Item item = new Item();
-        item.setName(itemRequest.getName());
-        if (itemRequest.getDescription() != null) {
-            item.setDescription(itemRequest.getDescription());
-        }
-        item.setQuantity(itemRequest.getQuantity());
-        if (itemRequest.getLocationId() != null) {
-            Location location = locationRepository.findById(itemRequest.getLocationId())
-                    .orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + itemRequest.getLocationId()));
-            item.setLocation(location);
-        }
-        return itemRepository.save(item);
-    }
+    Optional<GetItemDTO> getItemById(Long id);
 
     /**
-     * Retrieves all items from the repo.
+     * Gets all items.
      *
-     * @return a list of all items.
+     * @return a list of all items in single format {@link GetItemDTO}.
      */
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
-    }
+    List<GetItemDTO> getAllItems();
 
     /**
-     * Retrieves an item by its id.
+     * Gets all items in a location.
      *
-     * @param id the id of the item to retrieve.
-     * @return the item if exists and else empty.
+     * @param locationId the id of the location to get the items from.
+     * @return a list of all items in the location in single format {@link GetItemDTO}.
      */
-    public Optional<Item> getItemById(Long id) {
-        return itemRepository.findById(id);
-    }
+    List<GetItemDTO> getItemsByLocationId(Long locationId);
 
     /**
-     * Deletes an Item by its id.
+     * Updates an item.
+     *
+     * @param id           the id of the item to update.
+     * @param patchItemDTO the request body containing information about which fields of the item to update which what values.
+     * @return the item in format {@link GetItemDTO}.
+     */
+    GetItemDTO updateItem(Long id, PatchItemDTO patchItemDTO);
+
+    /**
+     * Deletes an item.
      *
      * @param id the id of the item to delete.
      */
-    public void deleteItem(Long id) {
-        itemRepository.deleteById(id);
-    }
+    void deleteItem(Long id);
 
-    /**
-     * Updates an existing item.
-     *
-     * @param id                the id of the item to update
-     * @param updateItemRequest the request body containing values to update the item with.
-     * @return the updated item.
-     * @throws IllegalArgumentException if no item with the id exists or if no location for a given location id exists.
-     */
-    public Item updateItem(Long id, UpdateItemRequest updateItemRequest) {
-        return itemRepository.findById(id)
-                .map(item -> {
-                    if (updateItemRequest.getName() != null) {
-                        item.setName(updateItemRequest.getName());
-                    }
-                    if (updateItemRequest.getDescription() != null) {
-                        item.setDescription(updateItemRequest.getDescription());
-                    }
-                    if (updateItemRequest.getQuantity() != null) {
-                        item.setQuantity(updateItemRequest.getQuantity());
-                    }
-                    if (updateItemRequest.getLocationId() != null) {
-                        Location location = locationRepository.findById(updateItemRequest.getLocationId())
-                                .orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + updateItemRequest.getName()));
-                        item.setLocation(location);
-                    }
-                    return itemRepository.save(item);
-                }).orElseThrow(() -> new IllegalArgumentException("Item not found with id: " + id));
-    }
-
-    /**
-     * Retrieves all items in a location.
-     *
-     * @param locationId the id of the location to retrieve all items from.
-     * @return a list of all items in the location if the location exists.
-     * @throws IllegalArgumentException if location does not exist.
-     */
-    public List<Item> getItemsByLocationId(Long locationId) {
-        Location location = locationRepository.findById(locationId)
-                .orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + locationId));
-        return itemRepository.findByLocationId(location.getId());
-    }
+    // TODO: delete items in a location for cascading delete
 }

@@ -1,117 +1,62 @@
 package com.discohagen.springventory.service;
 
-import com.discohagen.springventory.dto.LocationRequest;
-import com.discohagen.springventory.dto.UpdateLocationRequest;
-import com.discohagen.springventory.model.Location;
-import com.discohagen.springventory.repository.LocationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.discohagen.springventory.dto.location.GetLocationDTO;
+import com.discohagen.springventory.dto.location.PatchLocationDTO;
+import com.discohagen.springventory.dto.location.PostLocationDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service class for managing locations. Provides methods to retrieve and manipulate locations.
+ * Service interface for managing items. Interface between {@link com.discohagen.springventory.controller.LocationController}
+ * and {@link com.discohagen.springventory.repository.LocationRepository}. Implements business logic including CRUD-operations.
  */
-@Service
-public class LocationService {
-    private final LocationRepository locationRepository;
-
+public interface LocationService {
     /**
-     * Constructs a LocationService.
+     * Creates a location.
      *
-     * @param locationRepository the repo used for location operations.
+     * @param postLocationDTO the request body to create the location from.
+     * @return the id the location can be found by.
      */
-    @Autowired
-    public LocationService(LocationRepository locationRepository) {
-        this.locationRepository = locationRepository;
-    }
+    Long saveLocation(PostLocationDTO postLocationDTO);
+
+    // TODO: pagination and entry limit for read methods
+    // TODO: sorting for read methods
+    // TODO: depth for nested locations and options for including items
+    // TODO: locations between a set min and max depth and option for including items
 
     /**
-     * Saves a new location.
+     * Get a location.
      *
-     * @param locationRequest the request to save as a location.
-     * @return the saved location.
+     * @param id the id of the location to get.
+     * @return the location if exists, otherwise empty.
      */
-    public Location saveLocation(LocationRequest locationRequest) {
-        Location location = new Location();
-        location.setName(locationRequest.getName());
-        if (locationRequest.getDescription() != null) {
-            location.setDescription(locationRequest.getDescription());
-        }
-        if (locationRequest.getParentLocationId() != null) {
-            Location parentLocation = locationRepository.findById(locationRequest.getParentLocationId())
-                    .orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + locationRequest.getParentLocationId()));
-            location.setParentLocation(parentLocation);
-        }
-        return locationRepository.save(location);
-    }
+    Optional<GetLocationDTO> getLocationById(Long id);
 
     /**
-     * Retrieves all locations.
+     * Gets all locations.
      *
      * @return a list of all locations.
      */
-    public List<Location> getAllLocations() {
-        return locationRepository.findAll();
-    }
+    List<GetLocationDTO> getAllLocations();
+
+    // TODO: get locations in a parent location
 
     /**
-     * Retrieves a location by its id.
+     * Updates a location.
      *
-     * @param id the id of the location to retrieve.
-     * @return the location if exists and else empty.
+     * @param id               the id of the location to update.
+     * @param patchLocationDTO the request body to take information from to update the location.
+     * @return the updated location.
      */
-    public Optional<Location> getLocationById(Long id) {
-        return locationRepository.findById(id);
-    }
-
-    /**
-     * Retrieves all locations inside a location.
-     *
-     * @param parentLocationId the parent location to retrieve all child locations from.
-     * @return a list of all locations inside the parent location.
-     * @throws IllegalArgumentException if paren location does not exist.
-     */
-    public List<Location> getLocationsByParentLocationId(Long parentLocationId) {
-        Location parentLocation = locationRepository.findById(parentLocationId)
-                .orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + parentLocationId));
-        return locationRepository.findByParentLocationId(parentLocation.getId());
-    }
+    GetLocationDTO updateLocation(Long id, PatchLocationDTO patchLocationDTO);
 
     /**
      * Deletes a location.
      *
      * @param id the id of the location to delete.
      */
-    public void deleteLocation(Long id) {
-        locationRepository.deleteById(id);
-    }
+    void deleteLocation(Long id);
 
-    /**
-     * Updates an existing location.
-     *
-     * @param id                    the id of the location to update.
-     * @param updateLocationRequest the request containing values to update the location with.
-     * @return the updated location.
-     * @throws IllegalArgumentException if no location with the id exists or if no location for a given parentLocation exists.
-     */
-    public Location updateLocation(Long id, UpdateLocationRequest updateLocationRequest) {
-        return locationRepository.findById(id)
-                .map(location -> {
-                    if (updateLocationRequest.getName() != null) {
-                        location.setName(updateLocationRequest.getName());
-                    }
-                    if (updateLocationRequest.getDescription() != null) {
-                        location.setDescription(updateLocationRequest.getDescription());
-                    }
-                    if (updateLocationRequest.getParentLocationId() != null) {
-                        Location parentLocation = locationRepository.findById(updateLocationRequest.getParentLocationId())
-                                .orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + updateLocationRequest.getParentLocationId()));
-                        location.setParentLocation(parentLocation);
-                    }
-                    return locationRepository.save(location);
-                }).orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + id));
-    }
-
+    // TODO: delete locations in a parent location for cascading delete and option for including items
 }

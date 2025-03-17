@@ -1,0 +1,98 @@
+package com.discohagen.springventory.service;
+
+import com.discohagen.springventory.dto.location.*;
+import com.discohagen.springventory.model.Location;
+import com.discohagen.springventory.repository.LocationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Implements {@link LocationService}.
+ */
+@Service
+public class LocationServiceImpl implements LocationService {
+    private final LocationRepository locationRepository;
+
+    /**
+     * Constructs the location service.
+     *
+     * @param locationRepository the repository to use for location operations.
+     */
+    @Autowired
+    public LocationServiceImpl(LocationRepository locationRepository) {
+        this.locationRepository = locationRepository;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param postLocationDTO {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    public Long saveLocation(PostLocationDTO postLocationDTO) {
+        Location parentLocation = null;
+        if (postLocationDTO.getParentLocationId() != null) {
+            parentLocation = locationRepository.findById(postLocationDTO.getParentLocationId()).orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + postLocationDTO.getParentLocationId()));
+        }
+        Location location = postLocationDTO.toLocation(parentLocation);
+        Location savedLocation = locationRepository.save(location);
+        return savedLocation.getId();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    public List<GetLocationDTO> getAllLocations() {
+        List<Location> locations = locationRepository.findAll();
+        return locations.stream().map(Location::toGetLocationDTO).toList();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param id {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    public Optional<GetLocationDTO> getLocationById(Long id) {
+        return locationRepository.findById(id).map(Location::toGetLocationDTO);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param id {@inheritDoc}
+     */
+    public void deleteLocation(Long id) {
+        locationRepository.deleteById(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param id               {@inheritDoc}
+     * @param patchLocationDTO {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    public GetLocationDTO updateLocation(Long id, PatchLocationDTO patchLocationDTO) {
+        return locationRepository.findById(id).map(location -> {
+            if (patchLocationDTO.getName() != null) {
+                location.setName(patchLocationDTO.getName());
+            }
+            if (patchLocationDTO.getDescription() != null) {
+                location.setDescription(patchLocationDTO.getDescription());
+            }
+            if (patchLocationDTO.getParentLocationId() != null) {
+                Location parentLocation = locationRepository.findById(patchLocationDTO.getParentLocationId()).orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + patchLocationDTO.getParentLocationId()));
+                location.setParentLocation(parentLocation);
+            }
+            return locationRepository.save(location).toGetLocationDTO();
+        }).orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + id));
+    }
+
+}

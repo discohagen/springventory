@@ -1,5 +1,6 @@
 package com.discohagen.springventory.model;
 
+import com.discohagen.springventory.dto.location.GetLocationDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -42,4 +43,19 @@ public class Location {
     @JsonManagedReference
     private List<Item> items;
 
+    /**
+     * map a location to its exposeable format.
+     *
+     * @return {@link GetLocationDTO}
+     */
+    public GetLocationDTO toGetLocationDTO() {
+        GetLocationDTO dto = new GetLocationDTO();
+
+        dto.setId(this.getId());
+        dto.setName(this.getName());
+        dto.setDescription(this.getDescription());
+        dto.setParentLocationId(this.getParentLocation().getId());
+
+        return dto;
+    }
 }
