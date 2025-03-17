@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 @Getter
 @Setter
 public class LocationRequest {
+    private Long id;
     private String name;
     @Nullable
     private String description;

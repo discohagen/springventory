@@ -1,5 +1,6 @@
 package com.discohagen.springventory.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,5 +28,6 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "location_id")
+    @JsonBackReference
     private Location location;
 }

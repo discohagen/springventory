@@ -1,5 +1,7 @@
 package com.discohagen.springventory.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,12 +31,15 @@ public class Location {
 
     @ManyToOne
     @JoinColumn(name = "parent_location_id")
+    @JsonBackReference
     private Location parentLocation;
 
     @OneToMany(mappedBy = "parentLocation")
+    @JsonManagedReference
     private List<Location> childLocations;
 
     @OneToMany(mappedBy = "location")
+    @JsonManagedReference
     private List<Item> items;
 
 }
