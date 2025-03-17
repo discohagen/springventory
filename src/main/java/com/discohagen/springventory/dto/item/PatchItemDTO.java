@@ -1,19 +1,21 @@
-package com.discohagen.springventory.dto;
+package com.discohagen.springventory.dto.item;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * DTO for requesting an update for a location.
+ * The format of a request to update fields of an item.
  */
 @Getter
 @Setter
-public class UpdateLocationRequest {
+public class PatchItemDTO {
     @Nullable
     private String name;
     @Nullable
     private String description;
     @Nullable
-    private Long parentLocationId;
+    private Integer quantity;
+    @Nullable
+    private Long locationId;
 }
