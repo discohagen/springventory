@@ -96,8 +96,9 @@ public class LocationControllerImpl implements LocationController {
      * @return 204 (No Content).
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {
-        locationServiceImpl.deleteLocation(id);
+    public ResponseEntity<Void> deleteLocation(@PathVariable Long id,
+                                               @RequestParam(defaultValue = "true") boolean safeDelete) {
+        locationServiceImpl.deleteLocation(id, safeDelete);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

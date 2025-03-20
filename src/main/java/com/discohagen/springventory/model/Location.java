@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class Location {
 
     private String description;
 
+    @Nullable
     @ManyToOne
     @JoinColumn(name = "parent_location_id")
     @JsonBackReference
@@ -54,7 +56,9 @@ public class Location {
         dto.setId(this.getId());
         dto.setName(this.getName());
         dto.setDescription(this.getDescription());
-        dto.setParentLocationId(this.getParentLocation().getId());
+        if (this.getParentLocation() != null) {
+            dto.setParentLocationId(this.getParentLocation().getId());
+        }
 
         return dto;
     }

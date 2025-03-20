@@ -49,5 +49,5 @@ public interface LocationController {
      * @param id the id of the location to delete.
      * @return a response with status code.
      */
-    ResponseEntity<Void> deleteLocation(Long id);
+    ResponseEntity<Void> deleteLocation(Long id, boolean safeDelete);
 }

@@ -44,7 +44,10 @@ public class Item {
         getItemDTO.setName(this.getName());
         getItemDTO.setDescription(this.getDescription());
         getItemDTO.setQuantity(this.getQuantity());
-        getItemDTO.setLocationId(this.getLocation().getId());
+        Location location = this.getLocation();
+        if (location != null) {
+            getItemDTO.setLocationId(this.getLocation().getId());
+        }
 
         return getItemDTO;
     }

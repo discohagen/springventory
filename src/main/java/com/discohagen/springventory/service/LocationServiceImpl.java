@@ -1,7 +1,9 @@
 package com.discohagen.springventory.service;
 
 import com.discohagen.springventory.dto.location.*;
+import com.discohagen.springventory.model.Item;
 import com.discohagen.springventory.model.Location;
+import com.discohagen.springventory.repository.ItemRepository;
 import com.discohagen.springventory.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,15 +17,18 @@ import java.util.Optional;
 @Service
 public class LocationServiceImpl implements LocationService {
     private final LocationRepository locationRepository;
+    private final ItemRepository itemRepository;
 
     /**
      * Constructs the location service.
      *
      * @param locationRepository the repository to use for location operations.
+     * @param itemRepository     the repository to use for item operations.
      */
     @Autowired
-    public LocationServiceImpl(LocationRepository locationRepository) {
+    public LocationServiceImpl(LocationRepository locationRepository, ItemRepository itemRepository) {
         this.locationRepository = locationRepository;
+        this.itemRepository = itemRepository;
     }
 
     /**
@@ -68,7 +73,24 @@ public class LocationServiceImpl implements LocationService {
      *
      * @param id {@inheritDoc}
      */
-    public void deleteLocation(Long id) {
+    public void deleteLocation(Long id, boolean isSafeDeleteAndNotCascading) {
+        Location location = locationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + id));
+
+        if (isSafeDeleteAndNotCascading) {
+            List<Item> items = itemRepository.findByLocationId(location.getId());
+            for (Item item : items) {
+                item.setLocation(null);
+                itemRepository.save(item);
+            }
+
+            List<Location> childLocations = locationRepository.findByParentLocationId(location.getId());
+            for (Location childLocation : childLocations) {
+                childLocation.setParentLocation(null);
+                locationRepository.save(childLocation);
+            }
+
+        }
         locationRepository.deleteById(id);
     }
 
