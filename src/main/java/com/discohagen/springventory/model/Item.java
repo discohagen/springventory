@@ -4,6 +4,9 @@ import com.discohagen.springventory.dto.item.GetItemDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents an Item from the view of the database. An Item can be anything but should be a physical object not being a location but storeable in a location.
@@ -22,14 +25,17 @@ public class Item {
     @Column(nullable = false)
     private String name;
 
+    @Nullable
     private String description;
 
     @Column(nullable = false)
     private Integer quantity;
 
+    @Nullable
     @ManyToOne
     @JoinColumn(name = "location_id")
     @JsonBackReference
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Location location;
 
     /**

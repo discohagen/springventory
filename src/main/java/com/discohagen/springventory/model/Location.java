@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -29,12 +31,14 @@ public class Location {
     @Column(nullable = false)
     private String name;
 
+    @Nullable
     private String description;
 
     @Nullable
     @ManyToOne
     @JoinColumn(name = "parent_location_id")
     @JsonBackReference
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Location parentLocation;
 
     @OneToMany(mappedBy = "parentLocation")

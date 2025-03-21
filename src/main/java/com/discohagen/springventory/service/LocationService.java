@@ -51,12 +51,6 @@ public interface LocationService {
      */
     GetLocationDTO updateLocation(Long id, PatchLocationDTO patchLocationDTO);
 
-    /* TODO: control options for delete:
-     *   - 1. cascading, i.e. items with locationId and locations with parentLocationId get deleted also
-     *   - 2. safe, i.e. items with locationId and locations with parentLocationId get their references removed
-     *       before the location gets deleted.
-     *   => this should be controlled by a query parameter in the endpoint (isSafeDeleteAndNotCascading: Boolean) */
-
     /**
      * Deletes a location.
      *
