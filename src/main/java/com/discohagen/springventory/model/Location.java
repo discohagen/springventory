@@ -1,6 +1,7 @@
 package com.discohagen.springventory.model;
 
 import com.discohagen.springventory.dto.location.GetLocationDTO;
+import com.discohagen.springventory.dto.location.LocationSummaryDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -60,8 +61,12 @@ public class Location {
         dto.setId(this.getId());
         dto.setName(this.getName());
         dto.setDescription(this.getDescription());
-        if (this.getParentLocation() != null) {
-            dto.setParentLocationId(this.getParentLocation().getId());
+        Location parentLocation = this.getParentLocation();
+        if (parentLocation != null) {
+            LocationSummaryDTO parentLocationSummary = new LocationSummaryDTO();
+            parentLocationSummary.setId(parentLocation.getId());
+            parentLocationSummary.setName(parentLocation.getName());
+            dto.setParentLocationSummary(parentLocationSummary);
         }
 
         return dto;

@@ -1,7 +1,7 @@
 package com.discohagen.springventory.service;
 
 import com.discohagen.springventory.dto.item.GetItemDTO;
-import com.discohagen.springventory.dto.item.PatchItemDTO;
+import com.discohagen.springventory.dto.item.PutItemDTO;
 import com.discohagen.springventory.dto.item.PostItemDTO;
 
 import java.util.List;
@@ -51,10 +51,10 @@ public interface ItemService {
      * Updates an item.
      *
      * @param id           the id of the item to update.
-     * @param patchItemDTO the request body containing information about which fields of the item to update which what values.
+     * @param putItemDTO the request body containing information about which fields of the item to update which what values.
      * @return the item in format {@link GetItemDTO}.
      */
-    GetItemDTO updateItem(Long id, PatchItemDTO patchItemDTO);
+    GetItemDTO updateItem(Long id, PutItemDTO putItemDTO);
 
     /**
      * Deletes an item.

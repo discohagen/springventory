@@ -1,7 +1,7 @@
 package com.discohagen.springventory.service;
 
 import com.discohagen.springventory.dto.location.GetLocationDTO;
-import com.discohagen.springventory.dto.location.PatchLocationDTO;
+import com.discohagen.springventory.dto.location.PutLocationDTO;
 import com.discohagen.springventory.dto.location.PostLocationDTO;
 
 import java.util.List;
@@ -46,10 +46,10 @@ public interface LocationService {
      * Updates a location.
      *
      * @param id               the id of the location to update.
-     * @param patchLocationDTO the request body to take information from to update the location.
+     * @param putLocationDTO the request body to take information from to update the location.
      * @return the updated location.
      */
-    GetLocationDTO updateLocation(Long id, PatchLocationDTO patchLocationDTO);
+    GetLocationDTO updateLocation(Long id, PutLocationDTO putLocationDTO);
 
     /**
      * Deletes a location.

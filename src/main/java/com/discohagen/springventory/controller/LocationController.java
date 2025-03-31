@@ -1,7 +1,7 @@
 package com.discohagen.springventory.controller;
 
 import com.discohagen.springventory.dto.location.GetLocationDTO;
-import com.discohagen.springventory.dto.location.PatchLocationDTO;
+import com.discohagen.springventory.dto.location.PutLocationDTO;
 import com.discohagen.springventory.dto.location.PostLocationDTO;
 import org.springframework.http.ResponseEntity;
 
@@ -38,10 +38,10 @@ public interface LocationController {
      * Updates a location.
      *
      * @param id               the id of the location to update.
-     * @param patchLocationDTO the request body to update the locations by.
+     * @param putLocationDTO the request body to update the locations by.
      * @return a response with status code and the updated location.
      */
-    ResponseEntity<GetLocationDTO> updateLocation(Long id, PatchLocationDTO patchLocationDTO);
+    ResponseEntity<GetLocationDTO> updateLocation(Long id, PutLocationDTO putLocationDTO);
 
     /**
      * Deletes a location.

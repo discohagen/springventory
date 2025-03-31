@@ -14,6 +14,7 @@ public class CorsConfig {
 
     /**
      * Bean to configure CORS mappings.
+     *
      * @return WebMvcConfigurer
      */
     @Bean
@@ -23,7 +24,7 @@ public class CorsConfig {
             public void addCorsMappings(@NotNull CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:5173")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }

@@ -9,12 +9,10 @@ import org.jetbrains.annotations.Nullable;
  */
 @Getter
 @Setter
-public class PatchItemDTO {
-    @Nullable
+public class PutItemDTO {
     private String name;
     @Nullable
     private String description;
-    @Nullable
     private Integer quantity;
     @Nullable
     private Long locationId;

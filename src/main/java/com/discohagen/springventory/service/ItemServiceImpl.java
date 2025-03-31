@@ -1,7 +1,7 @@
 package com.discohagen.springventory.service;
 
 import com.discohagen.springventory.dto.item.GetItemDTO;
-import com.discohagen.springventory.dto.item.PatchItemDTO;
+import com.discohagen.springventory.dto.item.PutItemDTO;
 import com.discohagen.springventory.dto.item.PostItemDTO;
 import com.discohagen.springventory.model.Item;
 import com.discohagen.springventory.model.Location;
@@ -81,24 +81,20 @@ public class ItemServiceImpl implements ItemService {
     /**
      * {@inheritDoc}
      *
-     * @param id           {@inheritDoc}
-     * @param patchItemDTO {@inheritDoc}
+     * @param id         {@inheritDoc}
+     * @param putItemDTO {@inheritDoc}
      * @return {@inheritDoc}
      */
-    public GetItemDTO updateItem(Long id, PatchItemDTO patchItemDTO) {
+    public GetItemDTO updateItem(Long id, PutItemDTO putItemDTO) {
         return itemRepository.findById(id).map(item -> {
-            if (patchItemDTO.getName() != null) {
-                item.setName(patchItemDTO.getName());
-            }
-            if (patchItemDTO.getDescription() != null) {
-                item.setDescription(patchItemDTO.getDescription());
-            }
-            if (patchItemDTO.getQuantity() != null) {
-                item.setQuantity(patchItemDTO.getQuantity());
-            }
-            if (patchItemDTO.getLocationId() != null) {
-                Location location = locationRepository.findById(patchItemDTO.getLocationId()).orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + patchItemDTO.getLocationId()));
+            item.setName(putItemDTO.getName());
+            item.setDescription(putItemDTO.getDescription());
+            item.setQuantity(putItemDTO.getQuantity());
+            if (putItemDTO.getLocationId() != null) {
+                Location location = locationRepository.findById(putItemDTO.getLocationId()).orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + putItemDTO.getLocationId()));
                 item.setLocation(location);
+            } else {
+                item.setLocation(null);
             }
             return itemRepository.save(item).toGetItemDTO();
         }).orElseThrow(() -> new IllegalArgumentException("Item not found with id: " + id));

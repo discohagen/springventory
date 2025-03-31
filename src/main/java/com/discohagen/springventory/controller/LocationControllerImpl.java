@@ -75,14 +75,14 @@ public class LocationControllerImpl implements LocationController {
     /**
      * {@inheritDoc}
      *
-     * @param id               {@inheritDoc}
-     * @param patchLocationDTO {@inheritDoc}
+     * @param id             {@inheritDoc}
+     * @param putLocationDTO {@inheritDoc}
      * @return 200 (OK) and the updated location if exists, otherwise 404 (Not Found).
      */
-    @PatchMapping("/{id}")
-    public ResponseEntity<GetLocationDTO> updateLocation(@PathVariable Long id, @RequestBody PatchLocationDTO patchLocationDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<GetLocationDTO> updateLocation(@PathVariable Long id, @RequestBody PutLocationDTO putLocationDTO) {
         try {
-            GetLocationDTO getLocationDTO = locationServiceImpl.updateLocation(id, patchLocationDTO);
+            GetLocationDTO getLocationDTO = locationServiceImpl.updateLocation(id, putLocationDTO);
             return new ResponseEntity<>(getLocationDTO, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

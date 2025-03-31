@@ -1,6 +1,7 @@
 package com.discohagen.springventory.model;
 
 import com.discohagen.springventory.dto.item.GetItemDTO;
+import com.discohagen.springventory.dto.location.LocationSummaryDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,7 +53,10 @@ public class Item {
         getItemDTO.setQuantity(this.getQuantity());
         Location location = this.getLocation();
         if (location != null) {
-            getItemDTO.setLocationId(this.getLocation().getId());
+            LocationSummaryDTO locationSummaryDTO = new LocationSummaryDTO();
+            locationSummaryDTO.setId(location.getId());
+            locationSummaryDTO.setName(location.getName());
+            getItemDTO.setLocationSummary(locationSummaryDTO);
         }
 
         return getItemDTO;

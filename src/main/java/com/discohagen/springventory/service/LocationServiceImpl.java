@@ -97,21 +97,19 @@ public class LocationServiceImpl implements LocationService {
     /**
      * {@inheritDoc}
      *
-     * @param id               {@inheritDoc}
-     * @param patchLocationDTO {@inheritDoc}
+     * @param id             {@inheritDoc}
+     * @param putLocationDTO {@inheritDoc}
      * @return {@inheritDoc}
      */
-    public GetLocationDTO updateLocation(Long id, PatchLocationDTO patchLocationDTO) {
+    public GetLocationDTO updateLocation(Long id, PutLocationDTO putLocationDTO) {
         return locationRepository.findById(id).map(location -> {
-            if (patchLocationDTO.getName() != null) {
-                location.setName(patchLocationDTO.getName());
-            }
-            if (patchLocationDTO.getDescription() != null) {
-                location.setDescription(patchLocationDTO.getDescription());
-            }
-            if (patchLocationDTO.getParentLocationId() != null) {
-                Location parentLocation = locationRepository.findById(patchLocationDTO.getParentLocationId()).orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + patchLocationDTO.getParentLocationId()));
+            location.setName(putLocationDTO.getName());
+            location.setDescription(putLocationDTO.getDescription());
+            if (putLocationDTO.getParentLocationId() != null) {
+                Location parentLocation = locationRepository.findById(putLocationDTO.getParentLocationId()).orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + putLocationDTO.getParentLocationId()));
                 location.setParentLocation(parentLocation);
+            } else {
+                location.setParentLocation(null);
             }
             return locationRepository.save(location).toGetLocationDTO();
         }).orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + id));

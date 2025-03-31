@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 @Setter
 public class PostLocationDTO {
     private String name;
+    @Nullable
     private String description;
     @Nullable
     private Long parentLocationId;

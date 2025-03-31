@@ -1,7 +1,7 @@
 package com.discohagen.springventory.controller;
 
 import com.discohagen.springventory.dto.item.GetItemDTO;
-import com.discohagen.springventory.dto.item.PatchItemDTO;
+import com.discohagen.springventory.dto.item.PutItemDTO;
 import com.discohagen.springventory.dto.item.PostItemDTO;
 import com.discohagen.springventory.service.ItemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,14 +77,14 @@ public class ItemControllerImpl implements ItemController {
     /**
      * {@inheritDoc}
      *
-     * @param id           {@inheritDoc}
-     * @param patchItemDTO {@inheritDoc}
+     * @param id         {@inheritDoc}
+     * @param putItemDTO {@inheritDoc}
      * @return 200 (OK) and the updated item if exists, otherwise 404 (Not Found).
      */
-    @PatchMapping("/{id}")
-    public ResponseEntity<GetItemDTO> updateItem(@PathVariable Long id, @RequestBody PatchItemDTO patchItemDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<GetItemDTO> updateItem(@PathVariable Long id, @RequestBody PutItemDTO putItemDTO) {
         try {
-            GetItemDTO getItemDTO = itemServiceImpl.updateItem(id, patchItemDTO);
+            GetItemDTO getItemDTO = itemServiceImpl.updateItem(id, putItemDTO);
             return new ResponseEntity<>(getItemDTO, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

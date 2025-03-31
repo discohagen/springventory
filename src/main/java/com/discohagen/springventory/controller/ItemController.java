@@ -1,7 +1,7 @@
 package com.discohagen.springventory.controller;
 
 import com.discohagen.springventory.dto.item.GetItemDTO;
-import com.discohagen.springventory.dto.item.PatchItemDTO;
+import com.discohagen.springventory.dto.item.PutItemDTO;
 import com.discohagen.springventory.dto.item.PostItemDTO;
 import org.springframework.http.ResponseEntity;
 
@@ -39,10 +39,10 @@ public interface ItemController {
      * Updates an item.
      *
      * @param id           the id of the item to update.
-     * @param patchItemDTO the request body to update the item by.
+     * @param putItemDTO the request body to update the item by.
      * @return a response with status code and the updated item.
      */
-    ResponseEntity<GetItemDTO> updateItem(Long id, PatchItemDTO patchItemDTO);
+    ResponseEntity<GetItemDTO> updateItem(Long id, PutItemDTO putItemDTO);
 
     /**
      * Deletes an item.

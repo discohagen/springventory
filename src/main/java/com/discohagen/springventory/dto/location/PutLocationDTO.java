@@ -9,8 +9,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @Getter
 @Setter
-public class PatchLocationDTO {
-    @Nullable
+public class PutLocationDTO {
     private String name;
     @Nullable
     private String description;

@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 @Setter
 public class PostItemDTO {
     private String name;
+    @Nullable
     private String description;
     private Integer quantity;
     @Nullable
