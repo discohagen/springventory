@@ -1,0 +1,6 @@
+ToDo:
+- Docker
+- Automated Tests
+- Image attachments
+- User authorization
+- Remove Hibernate (Custom Schemas and Migrations)
