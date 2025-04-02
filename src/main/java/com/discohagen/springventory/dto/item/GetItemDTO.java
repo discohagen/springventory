@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * The exposable format of an item to retrieve.
  */
@@ -20,4 +22,8 @@ public class GetItemDTO {
     private Integer quantity;
     @Nullable
     private LocationSummaryDTO locationSummary;
+    @Nullable
+    private Long mainImageId;
+    @Nullable
+    private List<Long> imageIds;
 }

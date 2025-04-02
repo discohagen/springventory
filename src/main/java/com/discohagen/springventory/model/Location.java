@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +50,20 @@ public class Location {
     @OneToMany(mappedBy = "location")
     @JsonManagedReference
     private List<Item> items;
+
+    @Nullable
+    @OneToOne
+    @JoinColumn(name = "main_image_id")
+    private Image mainImage;
+
+    @Nullable
+    @ManyToMany
+    @JoinTable(
+            name = "location_images",
+            joinColumns = @JoinColumn(name = "location_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id")
+    )
+    private List<Image> images = new ArrayList<>();
 
     /**
      * map a location to its exposeable format.

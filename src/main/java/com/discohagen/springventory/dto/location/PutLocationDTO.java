@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * The request format for updating fields of a location.
  */
@@ -15,4 +17,8 @@ public class PutLocationDTO {
     private String description;
     @Nullable
     private Long parentLocationId;
+    @Nullable
+    private Long mainImageId;
+    @Nullable
+    private List<Long> imageIds;
 }

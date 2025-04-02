@@ -44,7 +44,7 @@ public class ItemServiceImpl implements ItemService {
         if (postItemDTO.getLocationId() != null) {
             location = locationRepository.findById(postItemDTO.getLocationId()).orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + postItemDTO.getLocationId()));
         }
-        Item item = postItemDTO.toItem(location);
+        Item item = postItemDTO.toItem(location, null, null);
         Item savedItem = itemRepository.save(item);
         return savedItem.getId();
     }

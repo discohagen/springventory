@@ -42,7 +42,7 @@ public class LocationServiceImpl implements LocationService {
         if (postLocationDTO.getParentLocationId() != null) {
             parentLocation = locationRepository.findById(postLocationDTO.getParentLocationId()).orElseThrow(() -> new IllegalArgumentException("Location not found with id: " + postLocationDTO.getParentLocationId()));
         }
-        Location location = postLocationDTO.toLocation(parentLocation);
+        Location location = postLocationDTO.toLocation(parentLocation, null, null);
         Location savedLocation = locationRepository.save(location);
         return savedLocation.getId();
     }

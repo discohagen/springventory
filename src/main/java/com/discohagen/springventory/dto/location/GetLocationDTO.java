@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * The response format for retrieving a location.
  */
@@ -18,4 +20,8 @@ public class GetLocationDTO {
     private String description;
     @Nullable
     private LocationSummaryDTO parentLocationSummary;
+    @Nullable
+    private Long mainImageId;
+    @Nullable
+    private List<Long> imageIds;
 }

@@ -9,8 +9,11 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Represents an Item from the view of the database. An Item can be anything but should be a physical object not being a location but storeable in a location.
+ * Represents an Item from the view of the database. An Item can be anything but should be a physical object not being a location but able to be stored in a location.
  */
 @Entity
 @Getter
@@ -38,6 +41,20 @@ public class Item {
     @JsonBackReference
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Location location;
+
+    @Nullable
+    @OneToOne
+    @JoinColumn(name = "main_image_id")
+    private Image mainImage;
+
+    @Nullable
+    @ManyToMany
+    @JoinTable(
+            name = "item_images",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id")
+    )
+    private List<Image> images = new ArrayList<>();
 
     /**
      * map an item model to the exposing format of the item.
