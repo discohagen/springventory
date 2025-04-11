@@ -4,3 +4,4 @@ ToDo:
 - Image attachments
 - User authorization
 - Remove Hibernate (Custom Schemas and Migrations)
+- Implement Bucket for Images (Minio)
